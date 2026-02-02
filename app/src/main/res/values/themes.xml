@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.PokeTcgData" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="dividerColor">@android:color/transparent</item>
+
+
+        <item name="listDividerAlertDialog">@null</item>
+    </style>
+
+    <style name="Theme.PokeTcgData" parent="Base.Theme.PokeTcgData" >
+
+        <item name="dividerColor">@android:color/transparent</item>
+
+
+        <item name="listDividerAlertDialog">@null</item>
+
+    </style>
+
+    <!-- NUEVO ESTILO ESPECÍFICO PARA EL SEARCHVIEW -->
+    <style name="Widget.App.SearchView" parent="Widget.Material3.SearchView">
+        <item name="dividerColor">@android:color/transparent</item>
+    </style>
+
+
+        
+
+</resources>

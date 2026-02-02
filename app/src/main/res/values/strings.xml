@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PokeTcgData</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_cards">Search cards...</string>
+    <string name="name_example">charizard</string>
+    <string name="stats_card">Set information</string>
+</resources>

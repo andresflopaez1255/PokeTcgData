@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="toolbar_bg">#1F1E1E</color>
+    <color name="search_bg">#1E1E1E</color>
+    <color name="search_stroke">#2A2A2A</color>
+    <color name="search_hint">#9AA0A6</color>
+    <color name="color_text_secondary">#D09E09</color>
+
+    <color name="bg_main">#0E1116</color>
+    <color name="surface">#151A21</color>
+    <color name="surface_elevated">#1B2230</color>
+
+    <color name="text_primary">#E8EBF0</color>
+    <color name="text_secondary">#A1A7B3</color>
+
+    <color name="primary">#3B82F6</color>
+    <color name="secondary">#FACC15</color>
+
+   <color name="red">#F44336</color>
+
+
+</resources>
