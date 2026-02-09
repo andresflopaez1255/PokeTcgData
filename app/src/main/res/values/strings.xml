@@ -5,4 +5,7 @@
     <string name="search_cards">Search cards...</string>
     <string name="name_example">charizard</string>
     <string name="stats_card">Set information</string>
+    <string name="card_statistics">Card statistics</string>
+    <string name="card_information">Card information</string>
+    <string name="market_prices_title">Market Prices</string>
 </resources>

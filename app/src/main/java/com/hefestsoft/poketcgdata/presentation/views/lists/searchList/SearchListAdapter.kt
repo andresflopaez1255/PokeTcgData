@@ -1,4 +1,4 @@
-package com.hefestsoft.poketcgdata.presentation.views.lists.setslist.adapters
+package com.hefestsoft.poketcgdata.presentation.views.lists.searchList
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,10 +10,13 @@ import coil.load
 import com.hefestsoft.poketcgdata.data.dtos.CardResumeDto
 import com.hefestsoft.poketcgdata.databinding.ItemCardBinding
 import com.hefestsoft.poketcgdata.presentation.fragments.HomeFragmentDirections
+import com.hefestsoft.poketcgdata.presentation.fragments.SearchFragment
+import com.hefestsoft.poketcgdata.presentation.fragments.SearchFragmentDirections
 
-class SetCardsListAdapter: RecyclerView.Adapter<SetCardsListAdapter.ViewHolder>() {
-    var cardsSets: MutableList<CardResumeDto>  = ArrayList()
+
+class SearchListAdapter: RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     lateinit var context: Context
+    var cardsResults: MutableList<CardResumeDto>  = ArrayList()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -29,35 +32,21 @@ class SetCardsListAdapter: RecyclerView.Adapter<SetCardsListAdapter.ViewHolder>(
         holder: ViewHolder,
         position: Int
     ) {
-
-
-        val item = cardsSets[position]
-        holder.binding.imageView.load(item.image) {
-            crossfade(true)
-            crossfade(1000)
-
-
-        }
-
+        val item = cardsResults[position]
+        holder.binding.imageView.load(item.image)
         holder.binding.txtViewNameCard.text = item.name
         holder.binding.txtViewRarityCard.text = item.rarity
-        holder.binding.txtViewNumberCard.text = "# ${item.localID}/${item.set.total}"
-
+        holder.binding.txtViewNumberCard.text = "# ${item.localID}/" +
+                "${item.set.total}"
         holder.binding.CVCard.setOnClickListener {
-           findNavController( holder.binding.root).navigate( HomeFragmentDirections.actionHomeFragmentToDetailFragment(item.id))
+            findNavController( holder.binding.root).navigate(SearchFragmentDirections.actionSearchFragmentToDetailFragment(item.id))
 
         }
 
 
     }
 
+    override fun getItemCount() = cardsResults.size
 
-    override fun getItemCount(): Int = cardsSets.size
-
-
-    inner class ViewHolder(val binding: ItemCardBinding) : RecyclerView.ViewHolder(binding.root)
-
-
-
-
+    class ViewHolder(val binding: ItemCardBinding): RecyclerView.ViewHolder(binding.root)
 }

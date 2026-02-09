@@ -10,7 +10,7 @@ data class PricingDTO(
 
 data class PriceChartingDto(
     val previousPrice: Double?,
-    val currentPrice: Double,
+    val currentPrice: Double?,
     val change: Double?,
     val currency: String,
     val source: String,

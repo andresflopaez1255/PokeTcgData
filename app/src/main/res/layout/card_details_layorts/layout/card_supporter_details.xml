@@ -11,8 +11,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="16dp"
         android:paddingBottom="26dp"
-        android:scrollIndicators="none"
-        >
+        android:scrollIndicators="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,114 +45,60 @@
                 android:textSize="25sp"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
-                android:text="124.0"
-                />
+                android:text="124.0" />
 
-            <!-- Ability Section -->
+            <!-- Description Section -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_supporter_detail"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@color/search_bg"
                 android:elevation="3dp"
                 app:cardCornerRadius="8dp"
-                android:layout_marginTop="26dp"
-               >
+                android:layout_marginTop="26dp">
 
-
-                    <TextView
-                        android:id="@+id/txtDescriptionResume"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:gravity="center"
-                        android:layout_marginTop="8dp"
-                        android:padding="12dp"
-                        tools:text="Ability effect goes here..." />
-
+                <TextView
+                    android:id="@+id/txtDescriptionResume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    tools:text="Effect goes here..." />
             </androidx.cardview.widget.CardView>
 
+            <!-- Market Prices Section -->
             <TextView
-                android:id="@+id/txtTitleAttacks"
+                android:id="@+id/txtTitleSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:text="@string/stats_card" />
+                android:text="@string/market_prices_title" />
 
-            <!-- Dynamic Attacks Container -->
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_stats"
+            <HorizontalScrollView
+                android:id="@+id/hsv_prices"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/search_bg"
-                android:elevation="3dp"
-                app:cardCornerRadius="8dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:scrollbars="none">
 
-                >
+                <LinearLayout
+                    android:id="@+id/containerPrices"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
-              <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="horizontal">
-
-                  <LinearLayout
-                      android:layout_width="326dp"
-                      android:layout_height="match_parent"
-                      android:orientation="vertical"
-                      android:padding="12dp">
-
-                      <TextView
-                          android:id="@+id/txtStatsSet"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="8dp"
-                          android:gravity="center"
-                          android:textColor="@color/color_text_secondary"
-                          android:textStyle="bold"
-                          android:textSize="16sp"
-                          tools:text="Ability effect goes here..."
-                          />
-
-                      <TextView
-                          android:id="@+id/txtSetNumber"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="8dp"
-                          android:gravity="center"
-                          android:textColor="@color/white"
-                          tools:text="Ability effect goes here..." />
-                  </LinearLayout>
-
-                  <LinearLayout
-                      android:layout_width="wrap_content"
-                      android:layout_height="match_parent"
-                      android:orientation="vertical"
-
-                      android:layout_gravity="end"
-                      >
-
-                      <ImageView
-                          android:id="@+id/imgSymbolSet"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          app:srcCompat="@drawable/ic_launcher_foreground" />
-                  </LinearLayout>
-              </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:text="Card information" />
-
+                android:text="@string/card_information" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_info_cont"
@@ -162,9 +107,7 @@
                 android:backgroundTint="@color/search_bg"
                 android:elevation="3dp"
                 app:cardCornerRadius="8dp"
-                android:layout_marginTop="12dp"
-
-                >
+                android:layout_marginTop="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -172,8 +115,9 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="200dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:orientation="vertical"
                         android:padding="12dp">
 
@@ -181,19 +125,16 @@
                             android:id="@+id/txtTitleRarity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                           android:text="Rarity"
-                            />
+                            android:text="Rarity" />
 
                         <TextView
                             android:id="@+id/txtRarity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:gravity="center"
                             android:textColor="@color/white"
                             tools:text="Ultra rare" />
 
@@ -202,50 +143,41 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:gravity="center"
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Regulation Mark"
-                            />
+                            android:text="Regulation Mark" />
 
                         <TextView
                             android:id="@+id/txtRmark"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:gravity="center"
                             android:textColor="@color/white"
                             tools:text="I" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="200dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:orientation="vertical"
-                        android:layout_gravity="end"
-                        >
-
-
+                        android:padding="12dp">
 
                         <TextView
                             android:id="@+id/txtTitleCardFormat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center"
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Card format"
-                            />
+                            android:text="Card format" />
 
                         <TextView
                             android:id="@+id/txtCardFormat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:gravity="center"
                             android:textColor="@color/white"
                             tools:text="Standard" />
 
@@ -254,59 +186,78 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:gravity="center"
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Illustration"
-                            />
+                            android:text="Illustration" />
 
                         <TextView
                             android:id="@+id/txtIllustration"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:gravity="center"
                             android:textColor="@color/white"
                             tools:text="I" />
                     </LinearLayout>
                 </LinearLayout>
-
             </androidx.cardview.widget.CardView>
-            <!-- Market Prices... -->
+
             <TextView
-                android:id="@+id/txtTitleSection"
+                android:id="@+id/txtTitleStats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:text="Market Prices" />
+                android:text="@string/stats_card" />
 
-            <!-- Reusing the price structure -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_stats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/search_bg"
+                android:elevation="3dp"
                 app:cardCornerRadius="8dp"
                 android:layout_marginTop="12dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp"
-                    android:orientation="horizontal">
-                    <TextView android:id="@+id/txtPriceSection"
-                        android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="TGCPlayer"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/color_text_secondary"
-                       />
-                    <TextView android:id="@+id/txtPriceValueSection" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="end" android:textColor="@color/white" android:text="124.0" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtStatsSet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_text_secondary"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            tools:text="Set Name" />
+
+                        <TextView
+                            android:id="@+id/txtSetNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textColor="@color/white"
+                            tools:text="1/100" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imgSymbolSet"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        tools:src="@drawable/ic_notifications" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

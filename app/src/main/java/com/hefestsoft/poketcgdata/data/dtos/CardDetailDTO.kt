@@ -1,6 +1,7 @@
 package com.hefestsoft.poketcgdata.data.dtos
 
 import com.google.gson.annotations.SerializedName
+import com.hefestsoft.poketcgdata.utils.EnergyType
 
 
 data class CardDetailDTO (
@@ -45,7 +46,7 @@ data class Ability (
 )
 
 data class Attack (
-    val cost: List<String>,
+    val cost: List<EnergyType>,
     val name: String,
     val effect: String,
     val damage: String
@@ -58,7 +59,8 @@ data class Legal (
 
 data class Pricing (
     val cardmarket: CardMarketDto?,
-    val tcgplayer: TcgPlayerDto?
+    val tcgplayer: TcgPlayerDto?,
+    val priceCharting: PriceChartingDto?
 
 )
 

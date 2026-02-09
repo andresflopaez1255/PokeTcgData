@@ -1,18 +1,27 @@
 package com.hefestsoft.poketcgdata.presentation.viewsModels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hefestsoft.poketcgdata.data.dtos.CardDetailDTO
+import com.hefestsoft.poketcgdata.data.dtos.PriceChartingDto
 import com.hefestsoft.poketcgdata.domain.GetCardByIdUseCase
+import com.hefestsoft.poketcgdata.domain.GetPriceChartingDataUseCase
+import com.hefestsoft.poketcgdata.utils.normalizeLocalId
+import com.hefestsoft.poketcgdata.utils.slugify
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val getCardByIdUseCase: GetCardByIdUseCase) : ViewModel( ) {
+class DetailViewModel @Inject constructor(private val getCardByIdUseCase: GetCardByIdUseCase, private val getPriceChartingDataUseCase: GetPriceChartingDataUseCase) : ViewModel( ) {
     val detailCardData: MutableLiveData<CardDetailDTO> = MutableLiveData()
+
     val loadingDetailCard: MutableLiveData<Boolean> = MutableLiveData()
+
+    val priceChartingData: MutableLiveData<PriceChartingDto> = MutableLiveData()
+
 
     fun getCardById(id: String) {
         loadingDetailCard.postValue(true)
@@ -24,7 +33,18 @@ class DetailViewModel @Inject constructor(private val getCardByIdUseCase: GetCar
         }
 
 
+    }
+
+    fun getPriceChartingData(cardSlug: String, setSlug: String) {
+        viewModelScope.launch {
+            val response = getPriceChartingDataUseCase(cardSlug, setSlug)
+            priceChartingData.postValue(response)
+
         }
+
+    }
+
+
     }
 
 

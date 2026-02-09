@@ -13,7 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingVertical="12dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="8dp">
 
         <LinearLayout
             android:id="@+id/energyContainer"
@@ -23,7 +25,7 @@
             android:gravity="center_vertical" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="306dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="12dp">
@@ -32,7 +34,7 @@
                 android:id="@+id/txtNameAttack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/color_text_secondary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="Burning Darkness" />
@@ -46,5 +48,16 @@
                 android:textSize="14sp"
                 tools:text="This attack does 30 more damage for each Prize card your opponent has taken." />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtAttacksScore"
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
