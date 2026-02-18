@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetLastSetsCards @Inject constructor(private val setsRepository: SetsRepository) {
     suspend operator fun invoke(): ResponseDTO<List<CardResumeDto>> {
-        val response = setsRepository.getSets()
+        val response = setsRepository.getLastSetsCard()
         return response
 
     }

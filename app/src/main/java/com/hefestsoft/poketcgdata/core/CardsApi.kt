@@ -4,6 +4,7 @@ import com.hefestsoft.poketcgdata.data.dtos.CardDetailDTO
 import com.hefestsoft.poketcgdata.data.dtos.CardResumeDto
 import com.hefestsoft.poketcgdata.data.dtos.PriceChartingDto
 import com.hefestsoft.poketcgdata.data.dtos.ResponseDTO
+import com.hefestsoft.poketcgdata.data.dtos.SetDTO
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -33,6 +34,15 @@ interface CardsApi {
         @Query("set") set: String?,
         @Query("rarity") rarity: String?,
         @Query("page") page: Int? = 1,
-        @Query("pageSize") pageSize: Int? = 20
+        @Query("pageSize") pageSize: Int? = 100
     ): ResponseDTO<List<CardResumeDto>>
+
+    @GET("metadata/sets")
+    suspend fun getSets(
+        @Query("page") page: Int = 1,
+        @Query("pageSize") pageSize: Int = 100
+    ): ResponseDTO<List<SetDTO>>
+
+
+
 }

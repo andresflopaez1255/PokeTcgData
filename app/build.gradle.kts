@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.navigation.safeargs)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -70,6 +71,7 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview)
+    implementation(libs.androidx.gridlayout)
     ksp(libs.hilt.compiler)
 
     // ViewModel & Lifecycle
@@ -81,20 +83,28 @@ dependencies {
     //picasso
     implementation(libs.picasso)
     implementation(libs.coil)
-    implementation("io.coil-kt.coil3:coil-gif:3.3.0")
+    implementation(libs.coil.gif)
 
     //lottie
-    implementation("com.airbnb.android:lottie:6.0.0")
+    implementation(libs.lottie)
 
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.androidx.core.ktx)
+
+    //Android
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.voyager.tabNavigator)
+
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+
 }

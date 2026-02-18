@@ -4,14 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.hefestsoft.poketcgdata.data.dtos.CardResumeDto
 import com.hefestsoft.poketcgdata.databinding.ItemCardBinding
-import com.hefestsoft.poketcgdata.presentation.fragments.HomeFragmentDirections
 
-class SetCardsListAdapter: RecyclerView.Adapter<SetCardsListAdapter.ViewHolder>() {
+class LastSetCardsListAdapter(private val onCardClick: (String) -> Unit) : RecyclerView.Adapter<LastSetCardsListAdapter.ViewHolder>() {
     var cardsSets: MutableList<CardResumeDto>  = ArrayList()
     lateinit var context: Context
     override fun onCreateViewHolder(
@@ -44,8 +42,7 @@ class SetCardsListAdapter: RecyclerView.Adapter<SetCardsListAdapter.ViewHolder>(
         holder.binding.txtViewNumberCard.text = "# ${item.localID}/${item.set.total}"
 
         holder.binding.CVCard.setOnClickListener {
-           findNavController( holder.binding.root).navigate( HomeFragmentDirections.actionHomeFragmentToDetailFragment(item.id))
-
+            onCardClick(item.id)
         }
 
 

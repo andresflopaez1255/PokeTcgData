@@ -53,16 +53,17 @@ data class CardMarketDto(
 data class TcgPlayerDto(
     val updated: String,
     val unit: String,
-    val holofoil: HolofoilDto,
+    val holofoil: HolofoilDto?,
 
     @SerializedName("reverse-holofoil")
-    val reverseHolofoil: HolofoilDto
+    val reverseHolofoil: HolofoilDto?
 )
 
 data class HolofoilDto(
-    val low: Double?,
-    val mid: Double?,
-    val high: Double?,
-    val market: Double?,
-    val directLow: Double?
+    val productId: String,
+    val lowPrice: Double?,
+    val midPrice: Double?,
+    val highPrice: Double?,
+    val marketPrice: Double?,
+    val directLowPrice: Double?
 )

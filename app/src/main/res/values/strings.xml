@@ -8,4 +8,24 @@
     <string name="card_statistics">Card statistics</string>
     <string name="card_information">Card information</string>
     <string name="market_prices_title">Market Prices</string>
+    <string name="loading_title">Searching the Pokédex</string>
+    <string name="loading_detail">
+    Fetching card details and price history…
+    </string>
+    <string name="loading_cards">Loading cards</string>
+    <string name="subtitle_loading_cards">Fetching data from the Pokédex…</string>
+    <string name="search_sets">Search sets....</string>
+    <!--    strings for loadings-->
+    <string-array name="home_loadings_txts">
+        <item>Scanning rare cards…</item>
+        <item>Checking market prices…</item>
+        <item> Almost there…</item>
+    </string-array>
+    <string-array name="search_loadings_txts">
+        <item>Searching the Pokédex…</item>
+        <item>Scanning rare cards…</item>
+        <item>Matching your query…</item>
+        <item>Fetching card details and price history…</item>
+    </string-array>
+
 </resources>

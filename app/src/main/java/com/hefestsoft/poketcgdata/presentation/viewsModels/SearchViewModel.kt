@@ -13,15 +13,21 @@ class SearchViewModel @Inject constructor(
     private val repository: CardsRepository
 ) : ViewModel() {
     val resultsSearchCards : MutableLiveData<List<CardResumeDto>> = MutableLiveData()
+    val loadingSearchCard : MutableLiveData<Boolean> = MutableLiveData()
+
 
     suspend fun searchCard(
         cardQuery: CardQuery
     ) {
         try {
+            loadingSearchCard.postValue(true)
             val result = repository.searchCards(cardQuery)
             resultsSearchCards.postValue(result.data)
         } catch (e: Exception){
             e.printStackTrace()
+        } finally {
+            loadingSearchCard.postValue(false)
+
         }
 
 

@@ -6,3 +6,10 @@ data class CardSetDto(
     val symbol: String,
     val total: Int,
 )
+
+data class SetDTO (
+    val id: String,
+    val name: String,
+    val logo: String?,
+    val cardCount: CardCount
+)

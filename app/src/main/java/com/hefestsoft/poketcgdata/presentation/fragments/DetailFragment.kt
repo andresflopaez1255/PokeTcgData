@@ -7,11 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.view.marginEnd
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import coil.load
+import com.hefestsoft.poketcgdata.R
 import com.hefestsoft.poketcgdata.data.dtos.CardDetailDTO
 import com.hefestsoft.poketcgdata.data.dtos.PriceChartingDto
 import com.hefestsoft.poketcgdata.databinding.CardDetailsBinding
@@ -20,6 +24,7 @@ import com.hefestsoft.poketcgdata.databinding.FragmentDetailBinding
 import com.hefestsoft.poketcgdata.databinding.ItemAttackBinding
 import com.hefestsoft.poketcgdata.databinding.CardPrincingBinding
 import com.hefestsoft.poketcgdata.presentation.viewsModels.DetailViewModel
+import com.hefestsoft.poketcgdata.utils.LoadingManager
 import com.hefestsoft.poketcgdata.utils.mapEnergy
 import com.hefestsoft.poketcgdata.utils.normalizeLocalId
 import com.hefestsoft.poketcgdata.utils.slugify
@@ -32,6 +37,8 @@ class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var binding: FragmentDetailBinding
     val priceMap = mutableMapOf<String, String>()
+    var codeBar = ""
+    private lateinit var loadingManager: LoadingManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,34 +61,62 @@ class DetailFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
+        loadingManager = LoadingManager(
+            lifecycleScope,
+            binding.txtLoadingSubtitle,
+            binding.loadingContainer
+        )
+
+        val bottomNav = requireActivity().findViewById<View>(R.id.bottomNav)
+        bottomNav.visibility = View.GONE
+
+
+
         viewModel.detailCardData.observe(viewLifecycleOwner) { card ->
             val  cardSlug = slugify("${card.name}-${normalizeLocalId(card.localId)}")
             val setSlug = slugify("pokemon-${card.set.name}")
             val slug = "$setSlug/$cardSlug"
-            Log.d("slug", slug)
+            "${card.localId}/${card.set.cardCount.official}".also { it.also { this.codeBar = it } }
             viewModel.getPriceChartingData(cardSlug, setSlug)
             viewModel.priceChartingData.observe(viewLifecycleOwner) { response ->
-                validatePriceState("cardmarket", card, response)
+                validatePriceState("pricecharting", card, response)
                 when(card.category) {
 
-                    "Trainer" -> {
-                        mapCardSupporter(card, response)
+                        "Trainer" -> {
+                            mapCardSupporter(card, response)
+                        }
+
+                        "Pokemon" -> {
+                            mapCard(card, response)
+                        }
+
+                        else -> {
+                            mapCardSupporter(card, response)
+                        }
+
                     }
 
-                    "Pokemon" -> {
-                        mapCard(card, response)
-                    }
-
-                    else -> {
-                        mapCardSupporter(card, response)
-                    }
-
-                }
 
 
             }
 
         }
+
+        viewModel.loadingDetailCard.observe(viewLifecycleOwner) { loading ->
+            val detailCardLoading = resources.getStringArray(R.array.home_loadings_txts).toList()
+            if (loading) {
+                binding.loadingContainer.visibility = View.VISIBLE
+                loadingManager.startLoading(detailCardLoading)
+                binding.detailFrame.visibility = View.GONE
+
+            } else {
+                binding.loadingContainer.visibility = View.GONE
+                binding.detailFrame.visibility = View.VISIBLE
+                loadingManager.stopLoading()
+            }
+        }
+
+
     }
 
 
@@ -91,8 +126,8 @@ class DetailFragment : Fragment() {
             "tcgplayer" -> {
                 run {
                     priceMap["name"] = "TCGPlayer"
-                    priceMap["price"] = if (card.pricing.tcgplayer?.holofoil?.market != null) card.pricing.tcgplayer.holofoil.market.toString() else "N/A"
-                    priceMap["previous"] = card.pricing.tcgplayer?.holofoil?.low.toString()
+                    priceMap["price"] = if (card.pricing.tcgplayer?.holofoil?.marketPrice != null) card.pricing.tcgplayer.holofoil.marketPrice.toString() else "N/A"
+                    priceMap["previous"] = card.pricing.tcgplayer?.holofoil?.lowPrice.toString()
                     priceMap["unit"] = card.pricing.tcgplayer?.unit.toString()
 
                 }
@@ -120,9 +155,6 @@ class DetailFragment : Fragment() {
 
                     }
 
-
-
-
             }
 
 
@@ -136,7 +168,8 @@ class DetailFragment : Fragment() {
     @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     fun mapCard(card: CardDetailDTO, priceChartingResponse: PriceChartingDto?) {
         val cardDetailsBinding = CardDetailsBinding.inflate(layoutInflater, binding.detailFrame, false)
-        binding.txtToolbar.text= card.name
+        binding.txtToolbar.text= "${card.name} #${this.codeBar}"
+
         cardDetailsBinding.imgCard.load("${card.image}/high.webp")
 
         cardDetailsBinding.txtTitlePrice.text = priceMap["name"]
@@ -154,32 +187,34 @@ class DetailFragment : Fragment() {
         
 
         cardDetailsBinding.containerAttacks.removeAllViews()
+        // ... dentro de mapCard ...
         card.attacks?.forEach { attack ->
             val attackBinding = ItemAttackBinding.inflate(layoutInflater, cardDetailsBinding.containerAttacks, false)
             attackBinding.txtNameAttack.text = attack.name
-              if (attack.effect.isNullOrEmpty()){
-                  attackBinding.txtDescAttack.visibility = View.GONE
-              } else {
-                  attackBinding.txtDescAttack.text = attack.effect
-              }
+           if (attack.effect == null){
+               attackBinding.txtDescAttack.visibility = View.GONE
+           } else {
+               attackBinding.txtDescAttack.text = attack.effect
+           }
             attackBinding.txtAttacksScore.text = attack.damage
-            val imagesEnergyList: MutableList<ImageView> = mutableListOf()
+
+
+            attackBinding.energyContainer.removeAllViews() 
             attack.cost.forEach { energy ->
                 val imageView = ImageView(requireContext())
-                imageView.layoutParams = ViewGroup.LayoutParams(90, 90)
-                imageView.cropToPadding = true
-                imageView.setPadding(12)
-                imageView.scaleType = ImageView.ScaleType.FIT_CENTER
-                imageView.adjustViewBounds = true
 
+                val size = (35 * resources.displayMetrics.density).toInt()
+                val margin = (-12 * resources.displayMetrics.density).toInt()
+
+                val params = LinearLayout.LayoutParams(size, size)
+                params.marginEnd = margin
+                imageView.layoutParams = params
+
+                imageView.scaleType = ImageView.ScaleType.FIT_CENTER
                 imageView.load(mapEnergy(energy))
-                imagesEnergyList.add(imageView)
+
                 attackBinding.energyContainer.addView(imageView)
             }
-
-
-
-
             cardDetailsBinding.containerAttacks.addView(attackBinding.root)
         }
         cardDetailsBinding.txtRarity.text = card.rarity
@@ -195,7 +230,7 @@ class DetailFragment : Fragment() {
         }
 
         cardDetailsBinding.txtStatsSet.text = card.set.name
-        cardDetailsBinding.txtSetNumber.text = "${card.localId}/${card.set.cardCount.official}"
+        cardDetailsBinding.txtSetNumber.text = this.codeBar
         cardDetailsBinding.imgSymbolSet.load("${card.set.symbol}.webp")
 
         binding.detailFrame.removeAllViews()
@@ -205,8 +240,8 @@ class DetailFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     fun mapCardSupporter(card: CardDetailDTO, priceChartingResponse: PriceChartingDto?) {
         val cardDetailsBinding = CardSupporterDetailsBinding.inflate(layoutInflater, binding.detailFrame, false)
-        val codeCard = "${card.localId}/${card.set.cardCount.official}"
-        binding.txtToolbar.text= "${card.name} #${codeCard}"
+
+        binding.txtToolbar.text= "${card.name} #${this.codeBar}"
         cardDetailsBinding.imgCard.load("${card.image}/high.webp")
         cardDetailsBinding.txtTitlePrice.text = priceMap["name"]
         cardDetailsBinding.txtPrice.text = if (priceMap["price"] == "N/A") "N/A" else "${priceMap["price"]} ${priceMap["unit"]}"
@@ -216,7 +251,7 @@ class DetailFragment : Fragment() {
         cardDetailsBinding.txtDescriptionResume.text = card.effect
         
         cardDetailsBinding.txtStatsSet.text = card.set.name
-        cardDetailsBinding.txtSetNumber.text = codeCard
+        cardDetailsBinding.txtSetNumber.text = this.codeBar
         cardDetailsBinding.txtRarity.text = card.rarity
         cardDetailsBinding.txtRmark.text = card.regulationMark
         cardDetailsBinding.txtCardFormat.text = if (card.legal.standard) "Standard" else "Expanded"
@@ -240,27 +275,15 @@ class DetailFragment : Fragment() {
     private fun setupPricingContainer(container: ViewGroup, card: CardDetailDTO, priceChartingResponse: PriceChartingDto?) {
         container.removeAllViews()
 
-        // CardMarket
-        card.pricing.cardmarket?.let { cm ->
-            val cmBinding = CardPrincingBinding.inflate(layoutInflater, container, false)
-            cmBinding.txtPriceSection.text = card.variants.toString()
-            if(card.variants.normal){
-                cmBinding.txtPriceValueSection.text = if(cm.avg != 0.0) "${cm.avg} ${cm.unit}" else "N/A"
-                cmBinding.txtPriceChange.text = "Trend: ${cm.avg7}"
-            } else{
-                cmBinding.txtPriceValueSection.text = if(cm.avgHolo != 0.0) "${cm.avgHolo} ${cm.unit}" else "N/A"
-                cmBinding.txtPriceChange.text = "okiii: ${cm.avg}"
-            }
-            container.addView(cmBinding.root)
-        }
-
         // TCGPlayer
         card.pricing.tcgplayer?.let { tp ->
+
             val tpBinding = CardPrincingBinding.inflate(layoutInflater, container, false)
             tpBinding.txtPriceSection.text = "TCGPlayer"
-            tpBinding.txtPriceValueSection.text = if(tp.holofoil.market != null) "${tp.holofoil.market} USD" else "N/A"
+            tpBinding.txtPriceValueSection.text = if(tp.holofoil?.marketPrice != null) "${tp.holofoil.marketPrice} USD" else "N/A"
 
-            tpBinding.txtPriceChange.text = "Low: ${tp.holofoil.low ?: "N/A"}"
+            tpBinding.txtPriceChange.text = if(tp.holofoil?.lowPrice != null) "Low: ${tp.holofoil.lowPrice} USD" else "N/A"
+
             container.addView(tpBinding.root)
         }
 
@@ -272,5 +295,28 @@ class DetailFragment : Fragment() {
             pcBinding.txtPriceChange.text = "Prev: ${pc.previousPrice ?: "N/A"}"
             container.addView(pcBinding.root)
         }
+
+        // CardMarket
+        card.pricing.cardmarket?.let { cm ->
+            val cmBinding = CardPrincingBinding.inflate(layoutInflater, container, false)
+            cmBinding.txtPriceSection.text = "Card Market"
+
+            if(cm.avg != 0.0){
+                cmBinding.txtPriceValueSection.text = "${cm.avg} ${cm.unit}"
+                cmBinding.txtPriceChange.text = "Low: ${cm.low ?: "N/A"}"
+            } else if (cm.avgHolo != 0.0) {
+                cmBinding.txtPriceValueSection.text = "${cm.avgHolo} ${cm.unit}"
+                cmBinding.txtPriceChange.text = "Low: ${cm.lowHolo} ${cm.unit}"
+
+
+            } else {
+                cmBinding.txtPriceValueSection.text = "N/A"
+                cmBinding.txtPriceChange.text = "N/A"
+
+            }
+            container.addView(cmBinding.root)
+        }
+
+
     }
 }

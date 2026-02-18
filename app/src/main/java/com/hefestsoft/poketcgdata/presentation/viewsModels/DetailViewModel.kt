@@ -26,26 +26,36 @@ class DetailViewModel @Inject constructor(private val getCardByIdUseCase: GetCar
     fun getCardById(id: String) {
         loadingDetailCard.postValue(true)
         viewModelScope.launch {
-            val response = getCardByIdUseCase(id)
-            if (response.status == "200")
+            try {
+                val response = getCardByIdUseCase(id)
+                if (response.status == "200") {
+                    detailCardData.postValue(response.data)
+                }
+            } catch (e: Exception) {
+                Log.e("DetailViewModel", "Error fetching card details: ${e.message}")
+            } finally {
                 loadingDetailCard.postValue(false)
-            detailCardData.postValue(response.data)
+            }
         }
 
 
     }
+
 
     fun getPriceChartingData(cardSlug: String, setSlug: String) {
+        loadingDetailCard.postValue(true)
         viewModelScope.launch {
-            val response = getPriceChartingDataUseCase(cardSlug, setSlug)
-            priceChartingData.postValue(response)
-
+            try {
+                val response = getPriceChartingDataUseCase(cardSlug, setSlug)
+                priceChartingData.postValue(response)
+            } catch (e: Exception) {
+                Log.e("DetailViewModel", "Error fetching price charting data: ${e.message}")
+            } finally {
+                loadingDetailCard.postValue(false)
+            }
         }
 
     }
 
 
     }
-
-
-

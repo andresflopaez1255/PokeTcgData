@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hefestsoft.poketcgdata.R
 import com.hefestsoft.poketcgdata.data.dtos.CardQuery
 import com.hefestsoft.poketcgdata.presentation.viewsModels.SearchViewModel
 import com.hefestsoft.poketcgdata.databinding.FragmentSearchBinding
 import com.hefestsoft.poketcgdata.presentation.views.lists.searchList.SearchListAdapter
-import com.hefestsoft.poketcgdata.presentation.views.lists.setslist.adapters.SetCardsListAdapter
+import com.hefestsoft.poketcgdata.utils.LoadingManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,6 +35,8 @@ class SearchFragment : Fragment() {
     private val searchQuery = MutableStateFlow("")
 
     private lateinit var adapter: SearchListAdapter
+    private lateinit var loadingManager: LoadingManager
+
 
 
     override fun onCreateView(
@@ -49,8 +51,15 @@ class SearchFragment : Fragment() {
     @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = SearchListAdapter()
-
+        adapter = SearchListAdapter { cardId ->
+            val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(cardId)
+            findNavController().navigate(action)
+        }
+        loadingManager = LoadingManager(
+            lifecycleScope,
+            binding.txtLoadingSubtitle,
+            binding.loadingContainer
+        )
 
         binding.arrowBack.setOnClickListener {
             findNavController().popBackStack()
@@ -63,6 +72,7 @@ class SearchFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
 
         lifecycleScope.launch {
             searchQuery
@@ -88,6 +98,24 @@ class SearchFragment : Fragment() {
             if (it.isNotEmpty()) {
                 adapter.cardsResults = it.toMutableList()
                 adapter.notifyDataSetChanged()
+            }
+
+
+
+
+        }
+
+        viewModel.loadingSearchCard.observe(viewLifecycleOwner) { loading ->
+            val loadingMessages = resources.getStringArray(R.array.search_loadings_txts).toList()
+
+            if (loading) {
+                binding.loadingContainer.visibility = View.VISIBLE
+                binding.rvSearch.visibility = View.GONE
+                loadingManager.startLoading(loadingMessages)
+            } else {
+                binding.loadingContainer.visibility = View.GONE
+                binding.rvSearch.visibility = View.VISIBLE
+                loadingManager.stopLoading()
             }
         }
 

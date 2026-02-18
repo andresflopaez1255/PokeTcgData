@@ -94,6 +94,7 @@
         android:orientation="vertical"
         android:layout_gravity="center"
         android:gravity="center"
+        android:visibility="gone"
         android:layout_marginTop="40dp">
 
         <com.airbnb.lottie.LottieAnimationView
@@ -104,15 +105,28 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading2"
             android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtLoadingTitle"
+            android:text="@string/loading_cards"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"/>
 
         <TextView
-            android:id="@+id/txtLoading"
-            android:layout_width="230dp"
-            android:layout_height="66dp"
-            android:gravity="center"
-            android:text="Cargando cartas, por favor espere..."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtLoadingSubtitle"
+            android:text="@string/subtitle_loading_cards"
             android:textColor="@color/color_text_secondary"
-            android:textSize="16sp" />
+            android:textSize="14sp"
+            android:gravity="center"/>
+
+
+
     </LinearLayout>
 
 </FrameLayout>

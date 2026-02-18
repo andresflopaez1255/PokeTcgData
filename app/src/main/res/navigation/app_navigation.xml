@@ -32,9 +32,22 @@
         android:name="com.hefestsoft.poketcgdata.presentation.fragments.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
-
         <argument
             android:name="id"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/setsFragment"
+        android:name="com.hefestsoft.poketcgdata.presentation.fragments.SetsFragment"
+        android:label="fragment_sets"
+        tools:layout="@layout/fragment_sets" >
+        <action
+            android:id="@+id/action_setsFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.hefestsoft.poketcgdata.presentation.fragments.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>
