@@ -17,6 +17,7 @@ import com.hefestsoft.poketcgdata.data.dtos.CardQuery
 import com.hefestsoft.poketcgdata.presentation.viewsModels.SearchViewModel
 import com.hefestsoft.poketcgdata.databinding.FragmentSearchBinding
 import com.hefestsoft.poketcgdata.presentation.views.lists.searchList.SearchListAdapter
+import com.hefestsoft.poketcgdata.utils.LoadingAnimation
 import com.hefestsoft.poketcgdata.utils.LoadingManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
@@ -36,6 +37,7 @@ class SearchFragment : Fragment() {
 
     private lateinit var adapter: SearchListAdapter
     private lateinit var loadingManager: LoadingManager
+    private var bottomNav: View? = null
 
 
 
@@ -55,11 +57,18 @@ class SearchFragment : Fragment() {
             val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(cardId)
             findNavController().navigate(action)
         }
+
+
         loadingManager = LoadingManager(
             lifecycleScope,
-            binding.txtLoadingSubtitle,
-            binding.loadingContainer
+            binding.loading.txtLoadingSubtitle,
+            binding.loading.loadingContainer,
+            binding.loading.loadingView,
+            LoadingAnimation.LoadingInfo
         )
+
+        bottomNav = activity?.findViewById(R.id.bottomNav)
+        bottomNav?.visibility = View.GONE
 
         binding.arrowBack.setOnClickListener {
             findNavController().popBackStack()
@@ -109,11 +118,11 @@ class SearchFragment : Fragment() {
             val loadingMessages = resources.getStringArray(R.array.search_loadings_txts).toList()
 
             if (loading) {
-                binding.loadingContainer.visibility = View.VISIBLE
+                binding.loading.loadingContainer.visibility = View.VISIBLE
                 binding.rvSearch.visibility = View.GONE
                 loadingManager.startLoading(loadingMessages)
             } else {
-                binding.loadingContainer.visibility = View.GONE
+                binding.loading.loadingContainer.visibility = View.GONE
                 binding.rvSearch.visibility = View.VISIBLE
                 loadingManager.stopLoading()
             }

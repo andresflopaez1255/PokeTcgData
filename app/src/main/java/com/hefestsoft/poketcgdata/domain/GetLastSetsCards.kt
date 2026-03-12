@@ -1,15 +1,16 @@
 package com.hefestsoft.poketcgdata.domain
 
-import com.hefestsoft.poketcgdata.core.CardsApi
+import android.util.Log
 import com.hefestsoft.poketcgdata.data.dtos.CardResumeDto
 import com.hefestsoft.poketcgdata.data.dtos.ResponseDTO
 import com.hefestsoft.poketcgdata.data.repositories.SetsRepository
 import javax.inject.Inject
 
-class GetLastSetsCards @Inject constructor(private val setsRepository: SetsRepository) {
-    suspend operator fun invoke(): ResponseDTO<List<CardResumeDto>> {
-        val response = setsRepository.getLastSetsCard()
-        return response
+class GetLastSetsCardsUseCase @Inject constructor(private val setsRepository: SetsRepository) {
+    suspend operator fun invoke(page: Int = 1): ResponseDTO<List<CardResumeDto>> {
+        val response = setsRepository.getLastSetsCard(page = page, pageSize = 50)
+        Log.d("GetLastSetsCardsUseCase", "Cards received for page $page: ${response.data.size}")
 
+        return response
     }
 }

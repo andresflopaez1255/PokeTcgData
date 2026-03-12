@@ -1,5 +1,6 @@
 package com.hefestsoft.poketcgdata.presentation.views.lists.setslist.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +9,7 @@ import coil.load
 import com.hefestsoft.poketcgdata.data.dtos.SetDTO
 import com.hefestsoft.poketcgdata.databinding.ItemSetCardBinding
 
-class SetListAdapter() : RecyclerView.Adapter<SetListAdapter.ViewHolder>() {
+class SetListAdapter(private val onItemClick: (SetDTO) -> Unit) : RecyclerView.Adapter<SetListAdapter.ViewHolder>() {
     var sets: MutableList<SetDTO> = ArrayList()
     lateinit var context: Context
 
@@ -21,6 +22,7 @@ class SetListAdapter() : RecyclerView.Adapter<SetListAdapter.ViewHolder>() {
         return ViewHolder(binding)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(
         holder: ViewHolder,
         position: Int
@@ -30,16 +32,14 @@ class SetListAdapter() : RecyclerView.Adapter<SetListAdapter.ViewHolder>() {
         holder.binding.imgSetCard.load("${item.logo}.webp") {
             crossfade(true)
             crossfade(1000)
-
         }
-
-
+        holder.binding.txtReleaseDate.text = "Release date: ${item.releaseDate}"
+        holder.binding.cardSet.setOnClickListener {
+            onItemClick(item)
+        }
     }
 
     override fun getItemCount() = sets.size
 
-
-
     inner class ViewHolder(val binding: ItemSetCardBinding) : RecyclerView.ViewHolder(binding.root)
-
 }

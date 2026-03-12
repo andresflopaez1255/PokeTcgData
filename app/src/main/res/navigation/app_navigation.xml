@@ -41,13 +41,26 @@
         android:name="com.hefestsoft.poketcgdata.presentation.fragments.SetsFragment"
         android:label="fragment_sets"
         tools:layout="@layout/fragment_sets" >
+
         <action
-            android:id="@+id/action_setsFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            android:id="@+id/action_setsFragment_to_setCardListFragment"
+
+            app:destination="@id/setCardListFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.hefestsoft.poketcgdata.presentation.fragments.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/setCardListFragment"
+        android:name="com.hefestsoft.poketcgdata.presentation.fragments.SetCardListFragment"
+        android:label="fragment_set_card_list"
+        tools:layout="@layout/fragment_set_card_list" >
+        <argument android:name="setId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_setCardListFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
 </navigation>

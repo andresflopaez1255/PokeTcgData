@@ -2,6 +2,7 @@ package com.hefestsoft.poketcgdata.presentation.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hefestsoft.poketcgdata.R
 import com.hefestsoft.poketcgdata.presentation.views.lists.setslist.adapters.LastSetCardsListAdapter
 import com.hefestsoft.poketcgdata.presentation.viewsModels.SetsViewModels
+import com.hefestsoft.poketcgdata.utils.LoadingAnimation
 import com.hefestsoft.poketcgdata.utils.LoadingManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
@@ -48,6 +51,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+
         adapter = LastSetCardsListAdapter { cardId ->
             val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(cardId)
             findNavController().navigate(action)
@@ -57,8 +61,11 @@ class HomeFragment : Fragment() {
 
         loadingManager = LoadingManager(
             lifecycleScope,
-            binding.txtLoadingSubtitle,
-            binding.loadingContainer
+            binding.loading.txtLoadingSubtitle,
+            binding.loading.loadingContainer,
+            binding.loading.loadingView,
+            LoadingAnimation.LoadingCards
+
         )
 
         binding.searchInput.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
@@ -70,29 +77,46 @@ class HomeFragment : Fragment() {
         }
 
 
-        binding.rvCardsSet.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.layoutSetList.rvCardsSet.apply {
+            this.layoutManager = layoutManager
             this.adapter = this@HomeFragment.adapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (dy > 0) {
+                        val visibleItemCount = layoutManager.childCount
+                        val totalItemCount = layoutManager.itemCount
+                        val pastVisibleItems = layoutManager.findFirstVisibleItemPosition()
+
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount - 5) {
+                            viewModel.getLastSetsCardsList(isNextPage = true)
+                        }
+                    }
+                }
+            })
         }
 
         viewModel.loadingSetCards.observe(viewLifecycleOwner){ loading ->
             val cardsStringsLoading = resources.getStringArray(R.array.home_loadings_txts).toList()
             if (loading){
-                    binding.loadingContainer.visibility = View.VISIBLE
-                    binding.rvCardsSet.visibility = View.GONE
-                    binding.txtTitleSet.visibility = View.GONE
+                    binding.loading.loadingContainer.visibility = View.VISIBLE
+                    binding.layoutSetList.root.visibility = View.GONE
                     loadingManager.startLoading(cardsStringsLoading)
             }else{
-                binding.rvCardsSet.visibility = View.VISIBLE
-                binding.txtTitleSet.visibility = View.VISIBLE
-                binding.loadingContainer.visibility = View.GONE
+                binding.layoutSetList.root.visibility = View.VISIBLE
+                binding.loading.loadingContainer.visibility = View.GONE
                 loadingManager.stopLoading()
             }
         }
 
         viewModel.setsCardsData.observe(viewLifecycleOwner) { sets ->
             if (sets.isNotEmpty()) {
-                binding.txtTitleSet.text = sets[0].set.name
+                binding.layoutSetList.txtTitleSet.text = sets[0].set.name
+
+
 
 
                 adapter.cardsSets = sets.toMutableList()

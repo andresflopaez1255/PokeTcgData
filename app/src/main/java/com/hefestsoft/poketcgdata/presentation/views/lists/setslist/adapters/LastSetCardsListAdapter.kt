@@ -2,6 +2,7 @@ package com.hefestsoft.poketcgdata.presentation.views.lists.setslist.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,7 @@ class LastSetCardsListAdapter(private val onCardClick: (String) -> Unit) : Recyc
 
 
         val item = cardsSets[position]
+        Log.d("LastSetCardsListAdapter", "Item: $item")
         holder.binding.imageView.load(item.image) {
             crossfade(true)
             crossfade(1000)

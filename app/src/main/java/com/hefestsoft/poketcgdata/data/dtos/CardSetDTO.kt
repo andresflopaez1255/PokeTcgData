@@ -11,5 +11,7 @@ data class SetDTO (
     val id: String,
     val name: String,
     val logo: String?,
-    val cardCount: CardCount
+    val cardCount: CardCount?,
+    val releaseDate: String,
+    val total: Int
 )

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".presentation.fragments.SetCardListFragment">
+
+    <include android:id="@+id/toolbar"
+        layout="@layout/tool_bar" />
+
+    <LinearLayout
+        android:id="@+id/layoutSetContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginTop="50dp">
+        <include android:id="@+id/layoutSetList"
+            layout="@layout/layout_set_list"/>
+    </LinearLayout>
+
+    <include android:id="@+id/loading"
+        layout="@layout/loading_view"/>
+
+</FrameLayout>

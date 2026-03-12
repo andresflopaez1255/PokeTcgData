@@ -27,7 +27,7 @@ interface CardsApi {
         @Query("setSlug") setSlug: String
     ): PriceChartingDto
 
-    @GET("cards/search")
+    @GET("searchs/cards")
     suspend fun searchCards(
         @Query("name") name: String,
         @Query("category") category: String?,
@@ -37,12 +37,22 @@ interface CardsApi {
         @Query("pageSize") pageSize: Int? = 100
     ): ResponseDTO<List<CardResumeDto>>
 
-    @GET("metadata/sets")
+    @GET("searchs/sets")
+    suspend fun searchSets(
+        @Query("query") query: String,
+
+    ): ResponseDTO<List<SetDTO>>
+
+    @GET("sets/all")
     suspend fun getSets(
         @Query("page") page: Int = 1,
         @Query("pageSize") pageSize: Int = 100
     ): ResponseDTO<List<SetDTO>>
 
-
-
+    @GET("cards/set/{setCode}")
+    suspend fun getSetCards(
+        @Path("setCode") setCode: String,
+        @Query("page") page: Int = 1,
+        @Query("pageSize") pageSize: Int = 100
+    ): ResponseDTO<List<CardResumeDto>>
 }

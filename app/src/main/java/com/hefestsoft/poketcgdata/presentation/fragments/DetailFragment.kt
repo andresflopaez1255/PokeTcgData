@@ -24,6 +24,7 @@ import com.hefestsoft.poketcgdata.databinding.FragmentDetailBinding
 import com.hefestsoft.poketcgdata.databinding.ItemAttackBinding
 import com.hefestsoft.poketcgdata.databinding.CardPrincingBinding
 import com.hefestsoft.poketcgdata.presentation.viewsModels.DetailViewModel
+import com.hefestsoft.poketcgdata.utils.LoadingAnimation
 import com.hefestsoft.poketcgdata.utils.LoadingManager
 import com.hefestsoft.poketcgdata.utils.mapEnergy
 import com.hefestsoft.poketcgdata.utils.normalizeLocalId
@@ -40,10 +41,12 @@ class DetailFragment : Fragment() {
     var codeBar = ""
     private lateinit var loadingManager: LoadingManager
 
+    private var bottomNav: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val id = arguments?.getString("id")
+        Log.d("DetailFragment", "Received ID: $id")
         id?.let { viewModel.getCardById(it) }
     }
 
@@ -55,20 +58,23 @@ class DetailFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.arrowBack.setOnClickListener {
+        binding.toolbar.arrowBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
         loadingManager = LoadingManager(
             lifecycleScope,
-            binding.txtLoadingSubtitle,
-            binding.loadingContainer
+            binding.loading.txtLoadingSubtitle,
+            binding.loading.loadingContainer,
+            binding.loading.loadingView,
+            LoadingAnimation.LoadingInfo
         )
 
-        val bottomNav = requireActivity().findViewById<View>(R.id.bottomNav)
-        bottomNav.visibility = View.GONE
+        bottomNav = activity?.findViewById(R.id.bottomNav)
+        bottomNav?.visibility = View.GONE
 
 
 
@@ -76,10 +82,12 @@ class DetailFragment : Fragment() {
             val  cardSlug = slugify("${card.name}-${normalizeLocalId(card.localId)}")
             val setSlug = slugify("pokemon-${card.set.name}")
             val slug = "$setSlug/$cardSlug"
+            Log.d("DetailFragment", "Received slug: $slug")
             "${card.localId}/${card.set.cardCount.official}".also { it.also { this.codeBar = it } }
             viewModel.getPriceChartingData(cardSlug, setSlug)
             viewModel.priceChartingData.observe(viewLifecycleOwner) { response ->
                 validatePriceState("pricecharting", card, response)
+                binding.toolbar.txtToolbar.text= "${card.name} #${this.codeBar}"
                 when(card.category) {
 
                         "Trainer" -> {
@@ -105,12 +113,12 @@ class DetailFragment : Fragment() {
         viewModel.loadingDetailCard.observe(viewLifecycleOwner) { loading ->
             val detailCardLoading = resources.getStringArray(R.array.home_loadings_txts).toList()
             if (loading) {
-                binding.loadingContainer.visibility = View.VISIBLE
+                binding.loading.loadingContainer.visibility = View.VISIBLE
                 loadingManager.startLoading(detailCardLoading)
                 binding.detailFrame.visibility = View.GONE
 
             } else {
-                binding.loadingContainer.visibility = View.GONE
+                binding.loading.loadingContainer.visibility = View.GONE
                 binding.detailFrame.visibility = View.VISIBLE
                 loadingManager.stopLoading()
             }
@@ -120,6 +128,11 @@ class DetailFragment : Fragment() {
     }
 
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bottomNav?.visibility = View.VISIBLE
+        bottomNav = null
+    }
     fun validatePriceState(preferredPrice: String, card: CardDetailDTO, response: PriceChartingDto?): Map<String, String> {
 
         when (preferredPrice) {
@@ -168,7 +181,7 @@ class DetailFragment : Fragment() {
     @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     fun mapCard(card: CardDetailDTO, priceChartingResponse: PriceChartingDto?) {
         val cardDetailsBinding = CardDetailsBinding.inflate(layoutInflater, binding.detailFrame, false)
-        binding.txtToolbar.text= "${card.name} #${this.codeBar}"
+
 
         cardDetailsBinding.imgCard.load("${card.image}/high.webp")
 
@@ -241,7 +254,7 @@ class DetailFragment : Fragment() {
     fun mapCardSupporter(card: CardDetailDTO, priceChartingResponse: PriceChartingDto?) {
         val cardDetailsBinding = CardSupporterDetailsBinding.inflate(layoutInflater, binding.detailFrame, false)
 
-        binding.txtToolbar.text= "${card.name} #${this.codeBar}"
+
         cardDetailsBinding.imgCard.load("${card.image}/high.webp")
         cardDetailsBinding.txtTitlePrice.text = priceMap["name"]
         cardDetailsBinding.txtPrice.text = if (priceMap["price"] == "N/A") "N/A" else "${priceMap["price"]} ${priceMap["unit"]}"
