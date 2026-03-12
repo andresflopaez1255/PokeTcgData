@@ -11,12 +11,16 @@ android {
     namespace = "com.hefestsoft.poketcgdata"
     compileSdk = 35
 
+    val versionMajor = 0
+    val versionMinor = 0
+    val versionPatch = System.getenv("GITHUB_RUN_NUMBER") ?: "1"
+
     defaultConfig {
         applicationId = "com.hefestsoft.poketcgdata"
         minSdk = 29
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInt()
+        versionName = "$versionMajor.$versionMinor.$versionPatch"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
