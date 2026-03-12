@@ -45,11 +45,10 @@ jobs:
           IS_RELEASE: "false"
 
       - name: Upload to Firebase App Distribution
-        uses: w9jds/firebase-action@v11.30.0
+        uses: FirebaseExtended/action-firebase-distribution@v1
         with:
-          args: appdistribution:distribute "app/build/outputs/apk/release/app-release.apk" --app "${{ secrets.FIREBASE_APP_ID }}" 
-                groups "test" 
-                release-notes "${{ steps.commit_msg.outputs.msg }}"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          groups: test
+          file: app/build/outputs/apk/release/app-release.apk
+          releaseNotes: ${{ steps.commit_msg.outputs.msg }}
