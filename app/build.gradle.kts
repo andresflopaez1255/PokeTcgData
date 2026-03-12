@@ -11,16 +11,22 @@ android {
     namespace = "com.hefestsoft.poketcgdata"
     compileSdk = 35
 
-    val versionMajor = 0
-    val versionMinor = 0
-    val versionPatch = System.getenv("GITHUB_RUN_NUMBER") ?: "1"
+    val runNumber = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInt()
+    val isRelease = System.getenv("IS_RELEASE") == "true"
+
+    // Lógica personalizada: 
+    // Testing: 0.0.x
+    // Release: 1.0.x (cada 10 incrementa el primer dígito)
+    val major = if (isRelease) 1 + (runNumber / 10) else 0
+    val minor = 0
+    val patch = if (isRelease) runNumber % 10 else runNumber
 
     defaultConfig {
         applicationId = "com.hefestsoft.poketcgdata"
         minSdk = 29
         targetSdk = 35
-        versionCode = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInt()
-        versionName = "$versionMajor.$versionMinor.$versionPatch"
+        versionCode = runNumber
+        versionName = "$major.$minor.$patch"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

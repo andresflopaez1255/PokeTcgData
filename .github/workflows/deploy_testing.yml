@@ -52,4 +52,5 @@ jobs:
             --groups "test" 
             --release-notes "${{ steps.commit_msg.outputs.msg }}"
         env:
-          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
