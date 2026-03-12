@@ -17,7 +17,7 @@ jobs:
 
       - name: Get commit message
         id: commit_msg
-        run: echo "msg=$(git log -1 --pretty=%B | tr -d '\n' | cut -c1-100)" >> $GITHUB_OUTPUT
+        run: echo "msg=$(git log -1 --pretty=%B | head -n 1)" >> $GITHUB_OUTPUT
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -42,15 +42,12 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           GITHUB_RUN_NUMBER: ${{ github.run_number }}
+          IS_RELEASE: "false"
 
       - name: Upload to Firebase App Distribution
         uses: w9jds/firebase-action@v11.30.0
         with:
-          args: >
-            appdistribution:distribute "app/build/outputs/apk/release/app-release.apk" 
-            --app "${{ secrets.FIREBASE_APP_ID }}" 
-            --groups "test" 
-            --release-notes "${{ steps.commit_msg.outputs.msg }}"
+          args: appdistribution:distribute "app/build/outputs/apk/release/app-release.apk" --app "${{ secrets.FIREBASE_APP_ID }}" --groups "test" --release-notes "${{ steps.commit_msg.outputs.msg }}"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
