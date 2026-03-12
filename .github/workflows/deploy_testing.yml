@@ -22,14 +22,12 @@ jobs:
 
       - name: Decode Keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > tcgData.jks
-          echo "KEYSTORE_PATH=${{ github.workspace }}/tcgData.jks" >> $GITHUB_ENV
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        
+          printf "%s" "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/app/tcgData.jks
+          echo "KEYSTORE_PATH=${{ github.workspace }}/app/tcgData.jks" >> $GITHUB_ENV
 
       - name: Build Signed Release APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew :app:assembleRelease
         env:
           KEYSTORE_PATH: ${{ env.KEYSTORE_PATH }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
