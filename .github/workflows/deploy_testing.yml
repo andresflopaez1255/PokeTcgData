@@ -22,9 +22,11 @@ jobs:
 
       - name: Decode Keystore
         run: |
-        
-          printf "%s" "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/app/tcgData.jks
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/app/tcgData.jks
           echo "KEYSTORE_PATH=${{ github.workspace }}/app/tcgData.jks" >> $GITHUB_ENV
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       - name: Build Signed Release APK
         run: ./gradlew :app:assembleRelease
@@ -35,8 +37,9 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Upload to Firebase App Distribution
-        uses: w9jds/firebase-action@master
+        uses: FirebaseExtended/action-firebase-distribution@v3
         with:
-          args: appdistribution:distribute app/build/outputs/apk/release/app-release.apk --app ${{ secrets.FIREBASE_APP_ID }} --groups "testers-group"
-        env:
-          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          groups: test
+          file: app/build/outputs/apk/release/app-release.apk
