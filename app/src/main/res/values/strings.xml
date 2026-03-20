@@ -27,5 +27,25 @@
         <item>Matching your query…</item>
         <item>Fetching card details and price history…</item>
     </string-array>
+    <string name="filters_title">Filters</string>
+    <string name="filters_reset">Reset</string>
+    <string name="filters_search_hint">Search card name, artist…</string>
+    <string name="filters_rarity">Rarity</string>
+    <string name="filters_types">Types</string>
+    <string name="filters_card_type">Card Type</string>
+    <string name="filters_sets">Sets</string>
+    <string name="filters_sets_hint">Select a set</string>
+    <string name="filters_price_range">Price Range</string>
+    <string name="filters_price_range_value">%1$s - %2$s</string>
+    <string name="filters_sort_by">Sort By</string>
+    <string name="filters_sort_market_value_desc">Market Value (High to Low)</string>
+    <string name="filters_apply">Apply Filters</string>
+    <string name="filters_apply_results">See %1$s Cards</string>
+    <string name="type_fire">Fire</string>
+    <string name="type_water">Water</string>
+    <string name="type_grass">Grass</string>
+    <string name="type_electric">Electric</string>
+    <string name="type_psychic">Psychic</string>
+    <string name="type_fighting">Fighting</string>
 
 </resources>

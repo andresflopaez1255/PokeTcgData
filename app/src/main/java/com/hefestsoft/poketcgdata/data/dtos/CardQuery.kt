@@ -2,6 +2,7 @@ package com.hefestsoft.poketcgdata.data.dtos
 
 data class CardQuery (
     val name: String,
+    val type: String? = null,
     val category: String?,
     val set: String? ,
     val rarity: String? ,

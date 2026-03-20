@@ -33,6 +33,7 @@ class CardsRepository @Inject constructor(
 
         val response = apiService.searchCards(
             cardQuery.name,
+            cardQuery.type,
             cardQuery.category,
             cardQuery.set,
             cardQuery.rarity,

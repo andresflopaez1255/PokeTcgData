@@ -1,9 +1,12 @@
 package com.hefestsoft.poketcgdata.core
 
-import com.hefestsoft.poketcgdata.core.CardsApi
+import android.content.Context
+import android.content.SharedPreferences
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -20,6 +23,17 @@ object RetrofitModule {
 
     @Provides
     fun provideBaseUrl(): String = "https://tcg-api-0ply.onrender.com/"
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson = Gson()
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences = context.getSharedPreferences("poketcg_metadata_cache", Context.MODE_PRIVATE)
+
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient =
@@ -34,12 +48,13 @@ object RetrofitModule {
     @Singleton
     fun provideRetrofit(
         baseUrl: String,
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        gson: Gson
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
 
