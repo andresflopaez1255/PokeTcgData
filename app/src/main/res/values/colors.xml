@@ -11,6 +11,20 @@
     <color name="bg_main">#0E1116</color>
     <color name="surface">#151A21</color>
     <color name="surface_elevated">#1B2230</color>
+    <color name="filter_sheet_background">#151B28</color>
+    <color name="filter_sheet_divider">#273247</color>
+    <color name="filter_sheet_handle">#3B4B74</color>
+    <color name="filter_chip_background">#2A3653</color>
+    <color name="filter_chip_selected">#2563EB</color>
+    <color name="filter_chip_text">#EEF2FF</color>
+    <color name="filter_slider_track">#2C3754</color>
+    <color name="filter_slider_thumb">#F8FAFC</color>
+    <color name="filter_type_fire">#FF7A1A</color>
+    <color name="filter_type_water">#F8FAFC</color>
+    <color name="filter_type_grass">#22C55E</color>
+    <color name="filter_type_electric">#FACC15</color>
+    <color name="filter_type_psychic">#D18BFF</color>
+    <color name="filter_type_fighting">#9C8F83</color>
 
     <color name="text_primary">#E8EBF0</color>
     <color name="text_secondary">#A1A7B3</color>

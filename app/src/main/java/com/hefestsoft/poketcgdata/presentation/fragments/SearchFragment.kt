@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -38,8 +38,7 @@ class SearchFragment : Fragment() {
     private lateinit var adapter: SearchListAdapter
     private lateinit var loadingManager: LoadingManager
     private var bottomNav: View? = null
-
-
+    private var currentFilters = SearchFiltersUiState()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +73,25 @@ class SearchFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        childFragmentManager.setFragmentResultListener(
+            SearchFiltersBottomSheet.REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            currentFilters = currentFilters.copy(
+                rarity = bundle.getString(SearchFiltersBottomSheet.RESULT_RARITY),
+                type = bundle.getString(SearchFiltersBottomSheet.RESULT_TYPE),
+                category = bundle.getString(SearchFiltersBottomSheet.RESULT_CATEGORY),
+                setId = bundle.getString(SearchFiltersBottomSheet.RESULT_SET_ID),
+                setName = bundle.getString(SearchFiltersBottomSheet.RESULT_SET_NAME)
+            )
+            triggerSearch(binding.searchInput.text?.toString().orEmpty())
+        }
+
+        binding.filterIcon.setOnClickListener {
+            SearchFiltersBottomSheet.newInstance(currentFilters)
+                .show(childFragmentManager, "search_filters")
+        }
+
         binding.searchInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -86,16 +104,8 @@ class SearchFragment : Fragment() {
         lifecycleScope.launch {
             searchQuery
                 .debounce(500)
-                .filter { it.length >= 3 }
                 .collectLatest { query ->
-                    val cardQuery: CardQuery = CardQuery(query,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                     )
-                     viewModel.searchCard(cardQuery)
+                    triggerSearch(query)
                 }
         }
 
@@ -104,14 +114,8 @@ class SearchFragment : Fragment() {
             this.adapter = this@SearchFragment.adapter
         }
         viewModel.resultsSearchCards.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                adapter.cardsResults = it.toMutableList()
-                adapter.notifyDataSetChanged()
-            }
-
-
-
-
+            adapter.cardsResults = it.toMutableList()
+            adapter.notifyDataSetChanged()
         }
 
         viewModel.loadingSearchCard.observe(viewLifecycleOwner) { loading ->
@@ -133,5 +137,36 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun triggerSearch(query: String) {
+        val trimmedQuery = query.trim()
+        if (trimmedQuery.isBlank() && !currentFilters.hasApiFilters()) {
+            adapter.cardsResults = mutableListOf()
+            adapter.notifyDataSetChanged()
+            return
+        }
+
+        if (trimmedQuery.length < 3 && !currentFilters.hasApiFilters()) {
+            adapter.cardsResults = mutableListOf()
+            adapter.notifyDataSetChanged()
+            return
+        }
+
+        lifecycleScope.launch {
+            val cardQuery = CardQuery(
+                name = trimmedQuery,
+                type = currentFilters.type,
+                category = currentFilters.category,
+                set = currentFilters.setId,
+                rarity = currentFilters.rarity,
+                page = 1,
+                pageSize = 50,
+            )
+
+            Log.d("SearchFragment", "triggerSearch: $cardQuery")
+            viewModel.searchCard(cardQuery)
+        }
     }
 }

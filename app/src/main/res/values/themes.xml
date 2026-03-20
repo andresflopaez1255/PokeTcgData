@@ -21,6 +21,15 @@
         <item name="dividerColor">@android:color/transparent</item>
     </style>
 
+    <style name="ThemeOverlay.PokeTcgData.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.PokeTcgData.BottomSheet</item>
+    </style>
+
+    <style name="Widget.PokeTcgData.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
 
         
 

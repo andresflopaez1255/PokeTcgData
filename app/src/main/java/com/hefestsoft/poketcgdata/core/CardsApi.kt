@@ -2,6 +2,8 @@ package com.hefestsoft.poketcgdata.core
 
 import com.hefestsoft.poketcgdata.data.dtos.CardDetailDTO
 import com.hefestsoft.poketcgdata.data.dtos.CardResumeDto
+import com.hefestsoft.poketcgdata.data.dtos.MetadataResponseDto
+import com.hefestsoft.poketcgdata.data.dtos.MetadataSetDto
 import com.hefestsoft.poketcgdata.data.dtos.PriceChartingDto
 import com.hefestsoft.poketcgdata.data.dtos.ResponseDTO
 import com.hefestsoft.poketcgdata.data.dtos.SetDTO
@@ -30,12 +32,25 @@ interface CardsApi {
     @GET("searchs/cards")
     suspend fun searchCards(
         @Query("name") name: String,
+        @Query("type") type: String?,
         @Query("category") category: String?,
         @Query("set") set: String?,
         @Query("rarity") rarity: String?,
         @Query("page") page: Int? = 1,
         @Query("pageSize") pageSize: Int? = 100
     ): ResponseDTO<List<CardResumeDto>>
+
+    @GET("metadata/rarities")
+    suspend fun getRarities(): List<String>
+
+    @GET("metadata/types")
+    suspend fun getTypes(): List<String>
+
+    @GET("metadata/card-types")
+    suspend fun getCardTypes(): List<String>
+
+    @GET("metadata/sets")
+    suspend fun getMetadataSets(): MetadataResponseDto<List<MetadataSetDto>>
 
     @GET("searchs/sets")
     suspend fun searchSets(
