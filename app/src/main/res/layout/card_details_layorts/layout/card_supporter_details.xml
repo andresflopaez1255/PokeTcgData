@@ -35,7 +35,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
-                android:text="PriceCharting"
+                android:text="@string/pricing_pricecharting"
                 android:textColor="@color/color_text_secondary" />
 
             <TextView
@@ -128,7 +128,7 @@
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Rarity" />
+                            android:text="@string/detail_rarity" />
 
                         <TextView
                             android:id="@+id/txtRarity"
@@ -146,7 +146,7 @@
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Regulation Mark" />
+                            android:text="@string/detail_regulation_mark" />
 
                         <TextView
                             android:id="@+id/txtRmark"
@@ -171,7 +171,7 @@
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Card format" />
+                            android:text="@string/detail_card_format" />
 
                         <TextView
                             android:id="@+id/txtCardFormat"
@@ -189,7 +189,7 @@
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Illustration" />
+                            android:text="@string/detail_illustration" />
 
                         <TextView
                             android:id="@+id/txtIllustration"

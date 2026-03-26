@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">PokeTcgData</string>
+    <string name="search_cards">Buscar cartas...</string>
+    <string name="name_example">charizard</string>
+    <string name="stats_card">Informacion del set</string>
+    <string name="card_statistics">Estadisticas de la carta</string>
+    <string name="card_information">Informacion de la carta</string>
+    <string name="market_prices_title">Precios de mercado</string>
+    <string name="loading_title">Buscando en la Pokedex</string>
+    <string name="loading_detail">Obteniendo detalles de la carta e historial de precios…</string>
+    <string name="loading_cards">Cargando cartas</string>
+    <string name="subtitle_loading_cards">Obteniendo datos desde la Pokedex…</string>
+    <string name="search_sets">Buscar sets...</string>
+    <string-array name="home_loadings_txts">
+        <item>Escaneando cartas raras…</item>
+        <item>Consultando precios de mercado…</item>
+        <item>Casi listo…</item>
+    </string-array>
+    <string-array name="search_loadings_txts">
+        <item>Buscando en la Pokedex…</item>
+        <item>Escaneando cartas raras…</item>
+        <item>Emparejando tu busqueda…</item>
+        <item>Obteniendo detalles de la carta e historial de precios…</item>
+    </string-array>
+    <string name="filters_title">Filtros</string>
+    <string name="filters_reset">Resetear</string>
+    <string name="filters_search_hint">Buscar nombre de carta, artista…</string>
+    <string name="filters_rarity">Rareza</string>
+    <string name="filters_types">Tipos</string>
+    <string name="filters_card_type">Tipo de carta</string>
+    <string name="filters_sets">Sets</string>
+    <string name="filters_sets_hint">Selecciona un set</string>
+    <string name="filters_price_range">Rango de precio</string>
+    <string name="filters_price_range_value">%1$s - %2$s</string>
+    <string name="filters_sort_by">Ordenar por</string>
+    <string name="filters_sort_market_value_desc">Valor de mercado (mayor a menor)</string>
+    <string name="filters_apply">Aplicar filtros</string>
+    <string name="filters_apply_results">Ver %1$s cartas</string>
+    <string name="type_fire">Fuego</string>
+    <string name="type_water">Agua</string>
+    <string name="type_grass">Planta</string>
+    <string name="type_electric">Electrico</string>
+    <string name="type_psychic">Psiquico</string>
+    <string name="type_fighting">Lucha</string>
+    <string name="settings_title">Configuracion</string>
+    <string name="settings_language_label">Idioma</string>
+    <string name="settings_save_language">Guardar idioma</string>
+    <string name="settings_device_id_label">ID del dispositivo</string>
+    <string name="home_title">PokeTcg</string>
+    <string name="sets_toolbar_title">Sets de Pokemon</string>
+    <string name="loading_sets">Cargando sets</string>
+    <string name="release_date_format">Fecha de lanzamiento: %1$s</string>
+    <string name="pricing_tcgplayer">TCGPlayer</string>
+    <string name="pricing_pricecharting">PriceCharting</string>
+    <string name="pricing_cardmarket">Card Market</string>
+    <string name="pricing_na">N/A</string>
+    <string name="pricing_low_format">Min: %1$s</string>
+    <string name="pricing_previous_format">Ant: %1$s</string>
+    <string name="card_format_standard">Estandar</string>
+    <string name="card_format_expanded">Expandido</string>
+    <string name="detail_ability">Habilidad</string>
+    <string name="detail_rarity">Rareza</string>
+    <string name="detail_regulation_mark">Marca de regulacion</string>
+    <string name="detail_card_format">Formato de carta</string>
+    <string name="detail_illustration">Ilustracion</string>
+</resources>

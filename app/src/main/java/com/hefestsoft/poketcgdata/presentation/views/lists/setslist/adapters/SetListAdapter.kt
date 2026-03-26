@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.hefestsoft.poketcgdata.R
 import com.hefestsoft.poketcgdata.data.dtos.SetDTO
 import com.hefestsoft.poketcgdata.databinding.ItemSetCardBinding
 
@@ -33,7 +34,10 @@ class SetListAdapter(private val onItemClick: (SetDTO) -> Unit) : RecyclerView.A
             crossfade(true)
             crossfade(1000)
         }
-        holder.binding.txtReleaseDate.text = "Release date: ${item.releaseDate}"
+        holder.binding.txtReleaseDate.text = context.getString(
+            R.string.release_date_format,
+            item.releaseDate
+        )
         holder.binding.cardSet.setOnClickListener {
             onItemClick(item)
         }

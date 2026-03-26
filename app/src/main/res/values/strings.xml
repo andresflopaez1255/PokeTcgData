@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">PokeTcgData</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_cards">Search cards...</string>
     <string name="name_example">charizard</string>
     <string name="stats_card">Set information</string>
@@ -47,5 +45,26 @@
     <string name="type_electric">Electric</string>
     <string name="type_psychic">Psychic</string>
     <string name="type_fighting">Fighting</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_language_label">Language</string>
+    <string name="settings_save_language">Save language</string>
+    <string name="settings_device_id_label">Device ID</string>
+    <string name="home_title">PokeTcg</string>
+    <string name="sets_toolbar_title">Pokemon Sets</string>
+    <string name="loading_sets">Loading sets</string>
+    <string name="release_date_format">Release date: %1$s</string>
+    <string name="pricing_tcgplayer">TCGPlayer</string>
+    <string name="pricing_pricecharting">PriceCharting</string>
+    <string name="pricing_cardmarket">Card Market</string>
+    <string name="pricing_na">N/A</string>
+    <string name="pricing_low_format">Low: %1$s</string>
+    <string name="pricing_previous_format">Prev: %1$s</string>
+    <string name="card_format_standard">Standard</string>
+    <string name="card_format_expanded">Expanded</string>
+    <string name="detail_ability">Ability</string>
+    <string name="detail_rarity">Rarity</string>
+    <string name="detail_regulation_mark">Regulation Mark</string>
+    <string name="detail_card_format">Card format</string>
+    <string name="detail_illustration">Illustration</string>
 
 </resources>
