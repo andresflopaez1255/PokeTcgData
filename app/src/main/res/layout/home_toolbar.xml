@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/tvTitle"
-                android:text="PokeTcg"
+                android:text="@string/home_title"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"

@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.hefestsoft.poketcgdata.R
 import com.hefestsoft.poketcgdata.data.dtos.CardQuery
 import com.hefestsoft.poketcgdata.data.dtos.SetDTO
 import com.hefestsoft.poketcgdata.databinding.FragmentSetsBinding
@@ -67,7 +68,7 @@ class SetsFragment : Fragment() {
             arrowBack.setOnClickListener {
                 requireActivity().onBackPressed()
             }
-            txtToolbar.text = "Pokemon Sets"
+            txtToolbar.text = getString(R.string.sets_toolbar_title)
         }
 
         loadingManager = LoadingManager(
@@ -87,7 +88,7 @@ class SetsFragment : Fragment() {
             if (loading) {
                 binding.loading.loadingContainer.visibility = View.VISIBLE
                 binding.rvSet.visibility = View.GONE
-                loadingManager.startLoading(listOf("Loading sets"))
+                loadingManager.startLoading(listOf(getString(R.string.loading_sets)))
 
             } else {
                 binding.loading.loadingContainer.visibility = View.GONE

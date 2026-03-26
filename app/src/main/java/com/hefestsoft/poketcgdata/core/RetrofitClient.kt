@@ -32,12 +32,15 @@ object RetrofitModule {
     @Singleton
     fun provideSharedPreferences(
         @ApplicationContext context: Context
-    ): SharedPreferences = context.getSharedPreferences("poketcg_metadata_cache", Context.MODE_PRIVATE)
+    ): SharedPreferences = context.getSharedPreferences("poketcg_app_preferences", Context.MODE_PRIVATE)
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient =
+    fun provideOkHttpClient(
+        deviceIdInterceptor: DeviceIdInterceptor
+    ): OkHttpClient =
         OkHttpClient.Builder()
+            .addInterceptor(deviceIdInterceptor)
             .connectTimeout(90, TimeUnit.SECONDS)
             .readTimeout(90, TimeUnit.SECONDS)
             .writeTimeout(90, TimeUnit.SECONDS)

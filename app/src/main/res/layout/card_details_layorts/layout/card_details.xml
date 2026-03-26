@@ -36,7 +36,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
-                android:text="PriceCharting"
+                android:text="@string/pricing_pricecharting"
                 android:textColor="@color/color_text_secondary" />
 
             <TextView
@@ -104,7 +104,7 @@
                         android:textColor="@color/red"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:text="Ability" />
+                        android:text="@string/detail_ability" />
 
                     <TextView
                         android:id="@+id/txtAbilityresume"
@@ -163,7 +163,7 @@
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Rarity"
+                            android:text="@string/detail_rarity"
                             />
 
                         <TextView
@@ -182,7 +182,7 @@
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Regulation Mark"
+                            android:text="@string/detail_regulation_mark"
                             />
 
                         <TextView
@@ -211,7 +211,7 @@
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Card format"
+                            android:text="@string/detail_card_format"
                             />
 
                         <TextView
@@ -230,7 +230,7 @@
                             android:textColor="@color/color_text_secondary"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:text="Illustration"
+                            android:text="@string/detail_illustration"
                             />
 
                         <TextView

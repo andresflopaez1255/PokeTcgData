@@ -2,13 +2,18 @@ package com.hefestsoft.poketcgdata.core
 
 import com.hefestsoft.poketcgdata.data.dtos.CardDetailDTO
 import com.hefestsoft.poketcgdata.data.dtos.CardResumeDto
+import com.hefestsoft.poketcgdata.data.dtos.LanguagePreferenceRequestDto
+import com.hefestsoft.poketcgdata.data.dtos.LanguagePreferenceResponseDto
 import com.hefestsoft.poketcgdata.data.dtos.MetadataResponseDto
 import com.hefestsoft.poketcgdata.data.dtos.MetadataSetDto
 import com.hefestsoft.poketcgdata.data.dtos.PriceChartingDto
 import com.hefestsoft.poketcgdata.data.dtos.ResponseDTO
 import com.hefestsoft.poketcgdata.data.dtos.SetDTO
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface CardsApi {
@@ -51,6 +56,14 @@ interface CardsApi {
 
     @GET("metadata/sets")
     suspend fun getMetadataSets(): MetadataResponseDto<List<MetadataSetDto>>
+
+    @POST("preferences/language")
+    suspend fun setLanguagePreference(
+        @Body request: LanguagePreferenceRequestDto
+    ): Response<Unit>
+
+    @GET("preferences/language")
+    suspend fun getLanguagePreference(): Response<LanguagePreferenceResponseDto>
 
     @GET("searchs/sets")
     suspend fun searchSets(

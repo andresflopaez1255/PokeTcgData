@@ -200,7 +200,8 @@ class DetailFragment : Fragment() {
         
 
         cardDetailsBinding.containerAttacks.removeAllViews()
-        // ... dentro de mapCard ...
+
+        Log.d("DetailFragment", "Attacks: ${card.attacks}")
         card.attacks?.forEach { attack ->
             val attackBinding = ItemAttackBinding.inflate(layoutInflater, cardDetailsBinding.containerAttacks, false)
             attackBinding.txtNameAttack.text = attack.name
@@ -267,7 +268,11 @@ class DetailFragment : Fragment() {
         cardDetailsBinding.txtSetNumber.text = this.codeBar
         cardDetailsBinding.txtRarity.text = card.rarity
         cardDetailsBinding.txtRmark.text = card.regulationMark
-        cardDetailsBinding.txtCardFormat.text = if (card.legal.standard) "Standard" else "Expanded"
+        cardDetailsBinding.txtCardFormat.text = if (card.legal.standard) {
+            getString(R.string.card_format_standard)
+        } else {
+            getString(R.string.card_format_expanded)
+        }
         
         if (!card.illustrator.isNullOrEmpty()) {
             cardDetailsBinding.txtIllustration.text = card.illustrator
@@ -292,10 +297,14 @@ class DetailFragment : Fragment() {
         card.pricing.tcgplayer?.let { tp ->
 
             val tpBinding = CardPrincingBinding.inflate(layoutInflater, container, false)
-            tpBinding.txtPriceSection.text = "TCGPlayer"
-            tpBinding.txtPriceValueSection.text = if(tp.holofoil?.marketPrice != null) "${tp.holofoil.marketPrice} USD" else "N/A"
+            tpBinding.txtPriceSection.text = getString(R.string.pricing_tcgplayer)
+            tpBinding.txtPriceValueSection.text = if(tp.holofoil?.marketPrice != null) "${tp.holofoil.marketPrice} USD" else getString(R.string.pricing_na)
 
-            tpBinding.txtPriceChange.text = if(tp.holofoil?.lowPrice != null) "Low: ${tp.holofoil.lowPrice} USD" else "N/A"
+            tpBinding.txtPriceChange.text = if(tp.holofoil?.lowPrice != null) {
+                getString(R.string.pricing_low_format, "${tp.holofoil.lowPrice} USD")
+            } else {
+                getString(R.string.pricing_na)
+            }
 
             container.addView(tpBinding.root)
         }
@@ -303,28 +312,37 @@ class DetailFragment : Fragment() {
         // PriceCharting
         priceChartingResponse?.let { pc ->
             val pcBinding = CardPrincingBinding.inflate(layoutInflater, container, false)
-            pcBinding.txtPriceSection.text = "PriceCharting"
-            pcBinding.txtPriceValueSection.text = if(pc.currentPrice != null) "${pc.currentPrice} USD" else "N/A"
-            pcBinding.txtPriceChange.text = "Prev: ${pc.previousPrice ?: "N/A"}"
+            pcBinding.txtPriceSection.text = getString(R.string.pricing_pricecharting)
+            pcBinding.txtPriceValueSection.text = if(pc.currentPrice != null) "${pc.currentPrice} USD" else getString(R.string.pricing_na)
+            pcBinding.txtPriceChange.text = getString(
+                R.string.pricing_previous_format,
+                pc.previousPrice?.toString() ?: getString(R.string.pricing_na)
+            )
             container.addView(pcBinding.root)
         }
 
         // CardMarket
         card.pricing.cardmarket?.let { cm ->
             val cmBinding = CardPrincingBinding.inflate(layoutInflater, container, false)
-            cmBinding.txtPriceSection.text = "Card Market"
+            cmBinding.txtPriceSection.text = getString(R.string.pricing_cardmarket)
 
             if(cm.avg != 0.0){
                 cmBinding.txtPriceValueSection.text = "${cm.avg} ${cm.unit}"
-                cmBinding.txtPriceChange.text = "Low: ${cm.low ?: "N/A"}"
+                cmBinding.txtPriceChange.text = getString(
+                    R.string.pricing_low_format,
+                    cm.low?.toString() ?: getString(R.string.pricing_na)
+                )
             } else if (cm.avgHolo != 0.0) {
                 cmBinding.txtPriceValueSection.text = "${cm.avgHolo} ${cm.unit}"
-                cmBinding.txtPriceChange.text = "Low: ${cm.lowHolo} ${cm.unit}"
+                cmBinding.txtPriceChange.text = getString(
+                    R.string.pricing_low_format,
+                    "${cm.lowHolo} ${cm.unit}"
+                )
 
 
             } else {
-                cmBinding.txtPriceValueSection.text = "N/A"
-                cmBinding.txtPriceChange.text = "N/A"
+                cmBinding.txtPriceValueSection.text = getString(R.string.pricing_na)
+                cmBinding.txtPriceChange.text = getString(R.string.pricing_na)
 
             }
             container.addView(cmBinding.root)
